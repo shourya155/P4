@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+<title> Searchng </title>
+<style>
+* {
+  box-sizing: border-box;
+}
+header {
+  background-color: #666;
+  padding: 10px;
+  text-align: center;
+  font-size: 20px;
+  color: white;
+}
+footer {
+  background-color: #777;
+  padding: 10px;
+  text-align: center;
+  color: white;
+}
+
+
+/* Create three equal columns that floats next to each other */
+.column1 {
+  float: left;
+  width: 20%;
+  height: 400px;
+  padding: 10px;
+  }
+.column2 {
+  float: left;
+  width: 50%;
+  height: 450px;
+  padding: 10px;
+}
+.column3 {
+  float: left;
+  width: 30%;
+  height: 700px;
+  padding: 10px;
+
+}
+
+
+/* Clear floats after the columns */ 
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+	body{
+		font-family: sans-serif;
+	}
+		.ajax-container{
+		width: 100%;
+		margin: 50px auto;
+	}
+	#btnAjaxCall{
+		height: 31px;
+		width: 90px;
+		border: none;
+		border-radius: 6px;
+		color: white;
+		background: #3498db;
+		outline: none;
+		font-size: 15px;
+		opacity: 0.7;
+		padding: 10px;
+	}
+
+	#btnAjaxCall:hover{
+		cursor: pointer;
+		opacity: 1;
+	}
+	#first, #next, #previous, #last{
+display: none;
+}
+	.item-details{
+		margin-top: 10px;
+		border: 1px solid #ddd;
+		padding: 6px;
+	}
+	.buttonavc {
+height: 31px;
+		width: 90px;
+		border: none;
+		border-radius: 6px;
+		color: white;
+		background: #3498db;
+		outline: none;
+		font-size: 15px;
+		opacity: 0.7;
+		padding: 10px;
+  
+}
+
+.buttonavc:hover {cursor: pointer;
+		opacity: 1;}
+
+.buttonavc:active {
+  background: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+.multiselect {
+  width: 200px;
+}
+
+.selectBox {
+  position: relative;
+}
+
+.selectBox select {
+  width: 100%;
+  font-weight: bold;
+}
+
+.overSelect {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
+#checkboxes {
+  display: none;
+  border: 1px #dadada solid;
+}
+
+#checkboxes label {
+  display: block;
+}
+
+#checkboxes label:hover {
+  background-color: #1e90ff;
+}
+#checkboxes2 {
+  display: none;
+  border: 1px #dadada solid;
+}
+
+#checkboxes2 label {
+  display: block;
+}
+
+#checkboxes2 label:hover {
+  background-color: #1e90ff;
+}
+#checkboxes3 {
+  display: none;
+  border: 1px #dadada solid;
+}
+
+#checkboxes3 label {
+  display: block;
+}
+
+#checkboxes3 label:hover {
+  background-color: #1e90ff;
+}
+
+</style>
+
+</head>
+<header>
+  <h2>Flash</h2>
+</header>
+<body >
+	<div id="div_A" style="height:700px; width:20%;padding:10px;
+                        background-color:#ccc;float:left;">
+	<form>
+  <div class="multiselect">
+    <div class="selectBox" onclick="showCheckboxes()">
+      <select>
+        <option>Verified</option>
+      </select>
+      <div class="overSelect"></div>
+    </div>
+    <div id="checkboxes">
+      <label for="one">
+        <input type="radio" name="verified" id="true" onclick="urll()"/>True</label>
+      <label for="two">
+        <input type="radio" name="verified" id="false" onclick="urll()"/>False</label>
+    </div>
+	<br>
+	<div class="selectBox" onclick="showCheckboxes2()">
+      <select>
+        <option>Country</option>
+      </select>
+      <div class="overSelect"></div>
+    </div>
+    <div id="checkboxes2">
+      <label for="twoone">
+        <input type="radio" name="country" id="us" onclick="urll()"/>US</label>
+      <label for="twotwo">
+        <input type="radio" name="country" id="in" onclick="urll()"/>India</label>
+      <label for="twothree">
+        <input type="radio" name="country" id="br" onclick="urll()"/>Brazil</label>
+    </div>
+	<br>
+	<div class="selectBox" onclick="showCheckboxes3()">
+      <select>
+        <option>Language</option>
+      </select>
+      <div class="overSelect"></div>
+    </div>
+    <div id="checkboxes3">
+      <label for="threeone">
+        <input type="radio" name="langauge" id="en" onclick="urll()"/>English</label>
+      <label for="threetwo">
+        <input type="radio" name="langauge" id="pt" onclick="urll()"/>Portugese</label>
+      <label for="threethree">
+        <input type="radio" name="langauge" id="hi" onclick="urll()"/>Hindi</label>
+    </div>
+  </div>
+</form>	
+	</div>
+  <div id="div_B"  style="height:700px; width:50%;padding:10px;
+                        background-color: white; float:left;>
+	<div class="ajax-container" >
+		<input type="text" id="search" name="search" size="40"/>
+		<input type="button" id="btnAjaxCall" value="Search" />
+		<div id="list" class="list1"></div>
+		<br>
+		<input type="button" class="buttonavc" id="first" onclick="firstPage()" value="first" />
+		<input type="button" class="buttonavc" id="next" onclick="nextPage()" value="next" />
+		<input type="button" class="buttonavc" id="previous" onclick="previousPage()" value="previous" />
+		<input type="button" class="buttonavc" id="last" onclick="lastPage()" value="last" />
+	</div>
+	</div>
+	<div class="column3" style="background-color:#ccc;">
+	<canvas id="myChart" width="400" height="400" >
+		</canvas>
+    </div>
+
+</body>
+
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"
+			  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+			  crossorigin="anonymous"></script>
+			  
+<script>
+	var list = new Array();
+    var pageList = new Array();
+    var currentPage = 1;
+    var numberPerPage = 10;
+    var numberOfPages = 0;
+	var ctx = document.getElementById('myChart');
+	var lab = new Array();
+	lab.push('Positive');
+	lab.push('Negative');
+	lab.push('Neutral');
+	var da = new Array();
+	
+	var filter = new Array();
+	var str="";
+	
+	$("#btnAjaxCall").click(function(){
+		fetchDataAndDisplay();
+		//urll();
+	});
+	
+	function fetchDataAndDisplay()
+	{
+		var word = document.getElementById("search").value;
+		if(word != "")
+			var b_url = "http://localhost:5000/select?q=tweet_text:"+word;
+			//var b_url = BASE_URL + "select" +"?q=tweet_text:"+word;
+			
+		else
+			var b_url = "http://localhost:5000/select?q=*:*";
+			//var b_url = BASE_URL + "select" +"?q=*:*";
+		var str="";
+		if(filter.length>0){
+			console.log(filter.length);
+			if(filter.length==1){
+				b_url = b_url + "&rows=10&" + filter[0];
+				}
+			else{
+				for(var i=0;i<filter.length ;i++){
+					b_url = b_url + "&" + filter[i];
+					}
+				}
+		}
+		else
+			b_url = b_url + "&rows=50";
+		
+		//document.write(b_url);
+		$(".list1").empty();
+		console.log(b_url);
+		$.ajax({
+			//url:"http://localhost:5000/select?q=tweet_text:"+word+"&rows=50"+str,
+			url:b_url,
+			method:"GET"
+		}).done(function(data){
+			
+			
+			var start = 0;
+			var end = data.response.docs.length - 1;
+			var str = '';
+			var countP = 0;
+			var countN = 0;
+			var countO = 0;
+			while(list.length){
+			list.pop();
+			}
+			while(da.length){
+			da.pop();
+			}
+			for(var i=start; i<=end; i++)
+			{
+				//list.push(data.response.docs[i].tweet_text+"<br>");
+				if(data.response.docs[i].sentiment.score == 0){
+					countO = countO + 1;
+					list.push(data.response.docs[i].tweet_text+"<br>🙄");
+					}
+				else if(data.response.docs[i].sentiment.score < 0){
+					countN = countN + 1;
+					list.push(data.response.docs[i].tweet_text+"<br>😳");
+					}
+				else{
+					countP = countP + 1;
+					list.push(data.response.docs[i].tweet_text+"<br>😀");
+					}
+			}			
+			//$(".display-data").append(str);
+			da.push(countP);
+			da.push(countN);
+			da.push(countO);
+			//numberOfPages = data1.response.docs.length/numberPerPage;
+			numberOfPages = Math.ceil(list.length / numberPerPage);
+			//data = data1;
+			loadList();
+			graph();
+		})
+	{ $('#first, #next, #previous, #last').show(); }
+	}
+	
+	function nextPage() {
+    currentPage += 1;
+    loadList();
+}
+
+function previousPage() {
+    currentPage -= 1;
+    loadList();
+}
+
+function firstPage() {
+    currentPage = 1;
+    loadList();
+}
+
+function lastPage() {
+    currentPage = numberOfPages;
+    loadList();
+}
+
+function loadList() {
+    var begin = ((currentPage - 1) * numberPerPage);
+    var end = begin + numberPerPage;
+
+    pageList = list.slice(begin, end);
+    drawList();
+    check();
+}
+    
+function drawList() {
+    document.getElementById("list").innerHTML = "";
+    for (r = 0; r < pageList.length; r++) {
+		var item = pageList[r];
+        document.getElementById("list").innerHTML += item + "<br/>";
+    }
+}
+
+function check() {
+    document.getElementById("next").disabled = currentPage == numberOfPages ? true : false;
+    document.getElementById("previous").disabled = currentPage == 1 ? true : false;
+    document.getElementById("first").disabled = currentPage == 1 ? true : false;
+    document.getElementById("last").disabled = currentPage == numberOfPages ? true : false;
+}
+
+
+
+function graph(){
+var myChart = new Chart(ctx, {
+    type: 'pie',
+    data: {
+        labels: lab,
+        datasets: [{
+            label: '# Score',
+            data: da,
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                /*'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'*/
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                /*'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'*/
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});	
+}
+
+var expanded = false;
+var expanded2 = false;
+var expanded3 = false;
+
+function showCheckboxes() {
+  var checkboxes = document.getElementById("checkboxes");
+  if (!expanded) {
+    checkboxes.style.display = "block";
+    expanded = true;
+  } else {
+    checkboxes.style.display = "none";
+    expanded = false;
+  }
+}
+
+function showCheckboxes2() {
+  var checkboxes2 = document.getElementById("checkboxes2");
+  if (!expanded2) {
+    checkboxes2.style.display = "block";
+    expanded2 = true;
+  } else {
+    checkboxes2.style.display = "none";
+    expanded2 = false;
+  }
+}
+
+function showCheckboxes3() {
+  var checkboxes3 = document.getElementById("checkboxes3");
+  if (!expanded3) {
+    checkboxes3.style.display = "block";
+    expanded3 = true;
+  } else {
+    checkboxes3.style.display = "none";
+    expanded3 = false;
+  }
+}
+
+
+
+
+function urll()
+{
+	if(filter.length>0)
+	{
+		while(filter.length)
+			filter.pop();
+		console.log(filter);
+	}
+	
+	if(document.getElementById("true").checked == true || document.getElementById("false").checked== true){
+		if(document.getElementById("true").checked == true)
+			filter.push("verified=true");
+		else
+			filter.push("verified=false");
+		}
+	if(document.getElementById("br").checked == true || document.getElementById("in").checked== true ||
+	    document.getElementById("us").checked== true){
+		if(document.getElementById("br").checked == true)
+			filter.push("fq=country:Brazil");
+		if(document.getElementById("in").checked== true)
+			filter.push("fq=country:India");
+		if(document.getElementById("us").checked== true)
+			filter.push("fq=country:USA");
+		}
+	if(document.getElementById("en").checked == true || document.getElementById("hi").checked== true ||
+	   document.getElementById("pt").checked == true ){
+	   
+		if(document.getElementById("en").checked == true)
+			filter.push("fq=tweet_lang:en");
+		if(document.getElementById("hi").checked== true)
+			filter.push("fq=tweet_lang:hi");
+		if(document.getElementById("pt").checked== true)
+			filter.push("fq=tweet_lang:pt");
+		}
+	
+	//console.log(filter);
+	fetchDataAndDisplay();
+}
+</script>
+
+</html>
